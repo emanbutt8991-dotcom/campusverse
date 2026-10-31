@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Defaults — overwritten at runtime by the theme engine (src/config/themeTokens.ts). */
+:root {
+  --uni-primary-rgb: 67 56 202;
+  --uni-secondary-rgb: 240 171 252;
+  --uni-accent-rgb: 192 38 211;
+  --uni-background-rgb: 247 247 251;
+  --uni-surface-rgb: 255 255 255;
+  --uni-text-rgb: 22 20 43;
+  --uni-muted-rgb: 90 90 110;
+  --uni-border-rgb: 226 226 240;
+  --uni-on-primary-rgb: 255 255 255;
+  --uni-highlight-rgb: 240 171 252;
+  --uni-on-highlight-rgb: 17 24 39;
+  --uni-ink-rgb: 67 56 202;
+  --uni-soft-rgb: 238 238 252;
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-uni-bg font-sans text-slate-900 antialiased;
+    transition: background-color 0.4s ease;
+  }
+  :focus-visible {
+    outline: 3px solid rgb(var(--uni-primary-rgb) / 0.55);
+    outline-offset: 2px;
+    border-radius: 10px;
+  }
+  input[type='search']::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+@layer utilities {
+  .pattern-dots {
+    background-image: radial-gradient(currentColor 1.2px, transparent 1.2px);
+    background-size: 16px 16px;
+  }
+  .pattern-grid {
+    background-image: linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
