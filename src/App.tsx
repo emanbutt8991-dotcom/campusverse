@@ -46,7 +46,7 @@ function RootRedirect() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/campusverse">
       <UniversityProvider>
         <ToastProvider>
           <Suspense fallback={<Loading />}>
