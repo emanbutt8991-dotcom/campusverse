@@ -60,7 +60,7 @@ export function HelpMenu() {
         onClick={() => setOpen((o) => !o)}
       >
         <CircleHelp size={20} aria-hidden />
-        <span className="hidden sm:inline">Help</span>
+        <span className="hidden sm:inline lg:hidden xl:inline">Help</span>
       </button>
 
       {open && (

@@ -5,6 +5,7 @@ import { DemoProvider } from './context/DemoContext';
 import { ToastProvider } from './context/ToastContext';
 import { useUniversityContext } from './hooks/useUniversity';
 import { AppShell } from './components/layout/AppShell';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import UniversitySelection from './pages/UniversitySelection';
 import Home from './pages/Home';
 import VerseRide from './pages/VerseRide';
@@ -46,30 +47,33 @@ function RootRedirect() {
 
 export default function App() {
   return (
-    <BrowserRouter basename="/campusverse">
-      <UniversityProvider>
-        <ToastProvider>
-          <Suspense fallback={<Loading />}>
-            <Routes>
-              <Route path="/" element={<RootRedirect />} />
-              <Route path="/select" element={<UniversitySelection />} />
-              <Route element={<CampusRoutes />}>
-                <Route path="/home" element={<Home />} />
-                <Route path="/ride" element={<VerseRide />} />
-                <Route path="/study" element={<VerseStudy />} />
-                <Route path="/meals" element={<VerseMeals />} />
-                <Route path="/connect" element={<VerseConnect />} />
-                <Route path="/room" element={<VerseRoom />} />
-                <Route path="/messages" element={<Messages />} />
-                <Route path="/notifications" element={<Notifications />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/about" element={<About />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
-            </Routes>
-          </Suspense>
-        </ToastProvider>
-      </UniversityProvider>
-    </BrowserRouter>
+    <ErrorBoundary>
+      {/* basename follows Vite's `base` (vite.config.ts), so routes resolve under /campusverse/ on GitHub Pages. */}
+      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+        <UniversityProvider>
+          <ToastProvider>
+            <Suspense fallback={<Loading />}>
+              <Routes>
+                <Route path="/" element={<RootRedirect />} />
+                <Route path="/select" element={<UniversitySelection />} />
+                <Route element={<CampusRoutes />}>
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/ride" element={<VerseRide />} />
+                  <Route path="/study" element={<VerseStudy />} />
+                  <Route path="/meals" element={<VerseMeals />} />
+                  <Route path="/connect" element={<VerseConnect />} />
+                  <Route path="/room" element={<VerseRoom />} />
+                  <Route path="/messages" element={<Messages />} />
+                  <Route path="/notifications" element={<Notifications />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+              </Routes>
+            </Suspense>
+          </ToastProvider>
+        </UniversityProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }

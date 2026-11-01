@@ -16,9 +16,30 @@ interface UniversityContextValue {
 
 export const UniversityContext = createContext<UniversityContextValue | null>(null);
 
+const COLOUR_KEYS = ['primary', 'secondary', 'accent', 'background', 'text'] as const;
+
+/** Saved custom universities can be stale or hand-edited; only accept ones with every field the UI relies on. */
+function isUsableCustom(u: unknown): u is UniversityConfig {
+  if (!u || typeof u !== 'object') return false;
+  const c = u as Partial<UniversityConfig>;
+  const strings = [c.id, c.name, c.shortName, c.monogram, c.city, c.athleticIdentity, c.mascot, c.campusStyle];
+  return (
+    strings.every((v) => typeof v === 'string' && v.length > 0) &&
+    !!c.colours &&
+    COLOUR_KEYS.every((k) => isValidHex(c.colours?.[k])) &&
+    Array.isArray(c.campusLocations) &&
+    Array.isArray(c.sampleCourses)
+  );
+}
+
 function loadInitial(): { selected: UniversityConfig | null; custom: UniversityConfig | null } {
-  const custom = readJSON<UniversityConfig | null>(storageKeys.custom, null);
-  const id = readJSON<string | null>(storageKeys.selected, null);
+  let custom = readJSON<UniversityConfig | null>(storageKeys.custom, null);
+  if (custom && !isUsableCustom(custom)) {
+    removeKey(storageKeys.custom);
+    custom = null;
+  }
+  const rawId = readJSON<unknown>(storageKeys.selected, null);
+  const id = typeof rawId === 'string' ? rawId : null;
   if (!id) return { selected: null, custom };
   if (custom && id === custom.id) return { selected: custom, custom };
   return { selected: getUniversityById(id) ?? null, custom };

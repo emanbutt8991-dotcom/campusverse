@@ -53,6 +53,25 @@ const EMPTY: DemoState = {
   notifications: [],
 };
 
+/** Keep only well-formed saved fields so stale or corrupted storage can't crash the app on reload. */
+function sanitizeDemoState(raw: unknown): DemoState {
+  const out: DemoState = { ...EMPTY };
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return out;
+  const r = raw as Record<string, unknown>;
+  const target = out as unknown as Record<string, unknown>;
+  (Object.keys(EMPTY) as (keyof DemoState)[]).forEach((k) => {
+    const v = r[k];
+    if (k === 'postComments') {
+      if (v && typeof v === 'object' && !Array.isArray(v) && Object.values(v).every(Array.isArray)) target[k] = v;
+    } else if (k === 'conversations') {
+      if (v === null || Array.isArray(v)) target[k] = v;
+    } else if (Array.isArray(v)) {
+      target[k] = v.filter((item) => item !== null && item !== undefined);
+    }
+  });
+  return out;
+}
+
 export interface DemoContextValue {
   dataset: Dataset;
   rides: Ride[];
@@ -94,7 +113,7 @@ const ME = 'Alex Morgan';
 export function DemoProvider({ university, children }: { university: UniversityConfig; children: ReactNode }) {
   const dataset = useMemo(() => buildDataset(university), [university]);
   const key = storageKeys.demo(university.id);
-  const [state, setState] = useState<DemoState>(() => ({ ...EMPTY, ...readJSON<Partial<DemoState>>(key, {}) }));
+  const [state, setState] = useState<DemoState>(() => sanitizeDemoState(readJSON<unknown>(key, {})));
 
   useEffect(() => {
     writeJSON(key, state);

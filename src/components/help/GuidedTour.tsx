@@ -72,9 +72,15 @@ export function GuidedTour({ open, onClose }: Props) {
   // Track the target's position (handles resize, scroll, route changes and lazy-loaded pages).
   useEffect(() => {
     if (!open || !step) return;
+    let revealed = false;
     const measure = () => {
       setVp((v) => (v.w === window.innerWidth && v.h === window.innerHeight ? v : { w: window.innerWidth, h: window.innerHeight }));
       const el = findTarget(step.target);
+      // The desktop nav can scroll sideways on tight screens; bring the target into view once per step.
+      if (el && !revealed) {
+        revealed = true;
+        el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
       const r = el?.getBoundingClientRect();
       const next = r ? { top: r.top - PAD, left: r.left - PAD, width: r.width + PAD * 2, height: r.height + PAD * 2 } : null;
       setBox((prev) => (sameBox(prev, next) ? prev : next));

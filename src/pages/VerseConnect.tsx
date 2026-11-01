@@ -72,7 +72,7 @@ export default function VerseConnect() {
     toast(going ? { title: 'RSVP confirmed!', description: `You're going to ${e.title}. Added to your Upcoming Activity.` } : { title: 'RSVP cancelled', description: e.title, tone: 'info' });
   };
 
-  const shareLink = share ? `${window.location.origin}/connect?q=${encodeURIComponent(share.content.slice(0, 24))}` : '';
+  const shareLink = share ? `${window.location.origin}${import.meta.env.BASE_URL}connect?q=${encodeURIComponent(share.content.slice(0, 24))}` : '';
 
   return (
     <div>

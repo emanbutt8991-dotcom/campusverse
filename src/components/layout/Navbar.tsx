@@ -62,7 +62,7 @@ export function Navbar({ onReset, onEditTheme }: Props) {
         <button className="rounded-xl p-2 text-slate-700 hover:bg-uni-soft lg:hidden" onClick={() => setDrawer(true)} aria-label="Open navigation menu">
           <Menu size={22} />
         </button>
-        <Link to="/home" className="flex items-center gap-2 rounded-xl" aria-label="CampusVerse home">
+        <Link to="/home" className="flex shrink-0 items-center gap-2 rounded-xl" aria-label="CampusVerse home">
           <span className="hidden sm:inline">
             <Logo />
           </span>
@@ -70,22 +70,24 @@ export function Navbar({ onReset, onEditTheme }: Props) {
             <Logo compact />
           </span>
         </Link>
-        <Link to="/profile" className="hidden items-center gap-2 rounded-full border border-uni-border bg-uni-soft py-1 pl-1 pr-3 text-xs font-semibold text-uni-ink md:inline-flex" title={u.name}>
+        <Link to="/profile" className="hidden shrink-0 items-center gap-2 rounded-full border border-uni-border bg-uni-soft py-1 pl-1 pr-3 text-xs font-semibold text-uni-ink md:inline-flex lg:hidden xl:inline-flex" title={u.name}>
           <MascotArt kind={u.mascot} primary={t.primary} highlight={t.highlight} monogram={u.monogram} size={24} label="" />
           <span className="max-w-[140px] truncate">{u.shortName}</span>
         </Link>
 
-        <nav className="ml-2 hidden flex-1 items-center gap-1 lg:flex" aria-label="Main">
+        <nav className="no-scrollbar ml-2 hidden min-w-0 flex-1 items-center gap-1 overflow-x-auto lg:flex" aria-label="Main">
           {[HOME_ITEM, ...MODULES].map((item) => (
-            <NavLink key={item.to} to={item.to} className={linkCls} data-tour={item.to.slice(1)}>
+            <NavLink key={item.to} to={item.to} className={(a) => `${linkCls(a)} shrink-0`} data-tour={item.to.slice(1)} aria-label={item.label}>
               <item.icon size={16} aria-hidden />
-              {item.label}
+              {/* Short labels on narrower desktops so the right-hand actions (Help, Messages, profile) always fit. */}
+              <span className="min-[1440px]:hidden">{item.short}</span>
+              <span className="hidden min-[1440px]:inline">{item.label}</span>
             </NavLink>
           ))}
         </nav>
         <div className="flex-1 lg:hidden" />
 
-        <div className="flex items-center gap-1">
+        <div className="flex shrink-0 items-center gap-1">
           <PrototypeBadge className="mr-1 hidden xl:inline-flex" />
           <HelpMenu />
           <NavLink to="/messages" data-tour="messages" className={({ isActive }) => `relative rounded-xl p-2.5 transition ${isActive ? 'bg-uni-primary text-uni-onprimary' : 'text-slate-700 hover:bg-uni-soft'}`} aria-label={`Messages${unreadMsgs ? `, ${unreadMsgs} unread` : ''}`}>
