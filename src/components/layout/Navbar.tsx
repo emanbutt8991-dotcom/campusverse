@@ -4,7 +4,7 @@ import { Bell, ChevronDown, Info, LogOut, Menu, MessagesSquare, Palette, Refresh
 import { HOME_ITEM, MODULES } from '../../config/navigation';
 import { useUniversity } from '../../hooks/useUniversity';
 import { useDemoData } from '../../hooks/useDemoData';
-import { Logo, PrototypeBadge } from '../common/Logo';
+import { Logo } from '../common/Logo';
 import { Avatar } from '../common/Avatar';
 import { MascotArt } from '../university/MascotArt';
 import { buildTokens } from '../../config/themeTokens';
@@ -88,7 +88,6 @@ export function Navbar({ onReset, onEditTheme }: Props) {
         <div className="flex-1 lg:hidden" />
 
         <div className="flex shrink-0 items-center gap-1">
-          <PrototypeBadge className="mr-1 hidden xl:inline-flex" />
           <HelpMenu />
           <NavLink to="/messages" data-tour="messages" className={({ isActive }) => `relative rounded-xl p-2.5 transition ${isActive ? 'bg-uni-primary text-uni-onprimary' : 'text-slate-700 hover:bg-uni-soft'}`} aria-label={`Messages${unreadMsgs ? `, ${unreadMsgs} unread` : ''}`}>
             <MessagesSquare size={20} />
@@ -191,7 +190,6 @@ export function Navbar({ onReset, onEditTheme }: Props) {
               <button onClick={() => { setDrawer(false); onReset(); }} className="flex h-11 w-full items-center gap-2 rounded-xl px-3 text-sm font-semibold text-slate-700 hover:bg-uni-soft">
                 <RefreshCw size={18} aria-hidden /> Reset Demo
               </button>
-              <PrototypeBadge className="mt-2" />
             </div>
           </aside>
         </div>

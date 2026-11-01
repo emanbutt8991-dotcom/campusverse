@@ -9,7 +9,7 @@ import { CustomUniversityForm } from '../components/university/CustomUniversityF
 import { MascotArt } from '../components/university/MascotArt';
 import { SearchBar } from '../components/common/SearchBar';
 import { Modal } from '../components/common/Modal';
-import { Logo, PrototypeBadge } from '../components/common/Logo';
+import { Logo } from '../components/common/Logo';
 import { buildTokens } from '../config/themeTokens';
 
 export default function UniversitySelection() {
@@ -45,7 +45,6 @@ export default function UniversitySelection() {
 
       <header className="relative mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
         <Logo />
-        <PrototypeBadge />
       </header>
 
       <main className="relative mx-auto max-w-7xl px-4 sm:px-6">
