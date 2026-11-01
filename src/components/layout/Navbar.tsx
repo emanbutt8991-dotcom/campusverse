@@ -9,6 +9,7 @@ import { Avatar } from '../common/Avatar';
 import { MascotArt } from '../university/MascotArt';
 import { buildTokens } from '../../config/themeTokens';
 import { timeAgo } from '../../utils/format';
+import { HelpMenu } from '../help/HelpMenu';
 
 interface Props {
   onReset: () => void;
@@ -76,7 +77,7 @@ export function Navbar({ onReset, onEditTheme }: Props) {
 
         <nav className="ml-2 hidden flex-1 items-center gap-1 lg:flex" aria-label="Main">
           {[HOME_ITEM, ...MODULES].map((item) => (
-            <NavLink key={item.to} to={item.to} className={linkCls}>
+            <NavLink key={item.to} to={item.to} className={linkCls} data-tour={item.to.slice(1)}>
               <item.icon size={16} aria-hidden />
               {item.label}
             </NavLink>
@@ -86,7 +87,8 @@ export function Navbar({ onReset, onEditTheme }: Props) {
 
         <div className="flex items-center gap-1">
           <PrototypeBadge className="mr-1 hidden xl:inline-flex" />
-          <NavLink to="/messages" className={({ isActive }) => `relative rounded-xl p-2.5 transition ${isActive ? 'bg-uni-primary text-uni-onprimary' : 'text-slate-700 hover:bg-uni-soft'}`} aria-label={`Messages${unreadMsgs ? `, ${unreadMsgs} unread` : ''}`}>
+          <HelpMenu />
+          <NavLink to="/messages" data-tour="messages" className={({ isActive }) => `relative rounded-xl p-2.5 transition ${isActive ? 'bg-uni-primary text-uni-onprimary' : 'text-slate-700 hover:bg-uni-soft'}`} aria-label={`Messages${unreadMsgs ? `, ${unreadMsgs} unread` : ''}`}>
             <MessagesSquare size={20} />
             {unreadMsgs > 0 && <span className="absolute right-1.5 top-1.5 h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white" />}
           </NavLink>

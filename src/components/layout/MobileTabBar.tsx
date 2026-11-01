@@ -10,6 +10,7 @@ export function MobileTabBar() {
           <li key={item.to}>
             <NavLink
               to={item.to}
+              data-tour={item.to.slice(1)}
               className={({ isActive }) => `flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-semibold transition ${isActive ? 'text-uni-ink' : 'text-slate-500 hover:text-slate-800'}`}
             >
               {({ isActive }) => (
